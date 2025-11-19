@@ -13,26 +13,26 @@ Uma agenda digital simples construída com Flask para criar, listar, editar e ex
 
 1. Clonar o repositório (ou abrir a pasta do projeto):
 
-```powershell
+```sh
 git clone https://github.com/FranbryloB/Projeto-Agenda
 cd Projeto-Agenda
 ```
 
 2. Criar e ativar um ambiente virtual (Windows PowerShell):
 
-```powershell
+```sh
 python -m venv env
 .\env\scripts\activate
 ```
 
 3. Instalar dependências
 
-```powershell
+```sh
 pip install -r requirements.txt
 ```
 ## Executando a aplicação
 
-```powershell
+```sh
 python app.py ou flask run --debug
 ```
 
