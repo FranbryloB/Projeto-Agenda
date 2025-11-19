@@ -14,7 +14,7 @@ Uma agenda digital simples construída com Flask para criar, listar, editar e ex
 1. Clonar o repositório (ou abrir a pasta do projeto):
 
 ```powershell
-git clone <URL-do-repositorio>
+git clone https://github.com/FranbryloB/Projeto-Agenda
 cd Projeto-Agenda
 ```
 
