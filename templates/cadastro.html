@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Cadastrar Compromisso</h2>
+
+<form method="POST" action="{{ url_for('cadastrar') }}">
+    <label>Título:</label><br>
+    <input type="text" name="titulo" required><br><br>
+
+    <label>Data:</label><br>
+    <input type="date" name="data" required><br><br>
+
+    <label>Hora:</label><br>
+    <input type="time" name="hora" required><br><br>
+
+    <label>Descrição:</label><br>
+    <textarea name="descricao"></textarea><br><br>
+
+    <button type="submit">Cadastrar</button>
+</form>
+{% endblock %}
