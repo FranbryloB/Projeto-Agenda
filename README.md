@@ -2,7 +2,7 @@
 
 Uma agenda digital simples construída com Flask para criar, listar, editar e excluir compromissos. Este repositório contém a aplicação e os templates necessários para rodar o sistema localmente.
 
-## ⚙️ Recursos
+## Recursos
 
 - Criar compromissos
 - Listar compromissos
