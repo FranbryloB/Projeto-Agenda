@@ -1,6 +1,18 @@
 # Projeto Agenda digital
 
-Uma agenda digital simples construída com Flask para criar, listar, editar e excluir compromissos. Este repositório contém a aplicação e os templates necessários para rodar o sistema localmente.
+Uma aplicação web simples desenvolvida com Flask seguindo o padrão MVC, criada para ajudar pessoas a se organizarem melhor no dia a dia. O sistema permite cadastrar, listar, editar, excluir e marcar compromissos como concluídos.
+
+## Objetivo do Sistema
+
+Oferecer uma agenda digital intuitiva e funcional que permita ao usuário:
+
+- Registrar compromissos de forma rápida
+- Visualizar todas as atividades em um só lugar
+- Editar ou excluir informações quando necessário
+- Marcar tarefas como concluídas
+- Facilitar a organização da rotina
+
+
 
 ## Público-Alvo
 Qualquer pessoa que precise de uma ferramenta simples para organizar sua rotina diária, especialmente:
