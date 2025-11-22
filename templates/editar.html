@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Editar Compromisso</h2>
+
+<form method="POST">
+    <label>Título:</label>
+    <input type="text" name="titulo" value="{{ compromisso.titulo }}" required>
+
+    <label>Data:</label>
+    <input type="date" name="data" value="{{ compromisso.data }}" required>
+
+    <label>Hora:</label>
+    <input type="time" name="hora" value="{{ compromisso.hora }}" required>
+
+    <label>Descrição:</label>
+    <textarea name="descricao">{{ compromisso.descricao }}</textarea>
+
+    <button type="submit">Salvar</button>
+</form>
+{% endblock %}
