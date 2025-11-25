@@ -107,6 +107,7 @@ Durante o desenvolvimento, aprendemos:
 ## Integrantes do Grupo
 
 - Emanoelly Francinny Brito Tavares
+- Ezaelly Clara Lopes Feitosa de Morais
 - Isabele Fernanda da Silva Albano
 - Lívia Tainá de Medeiros Oliveira
 - Tamíris dos Santos Medeiros
