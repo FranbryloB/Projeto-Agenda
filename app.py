@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
-from models.compromisso_model import (
-    adicionar_compromisso, listar_compromissos, buscar_compromisso,
-    editar_compromisso, excluir_compromisso, marcar_concluido, desmarcar_concluido
-)
+from flask import Flask, render_template, request, redirect, url_for, session
+from models.compromisso_model import ( adicionar_compromisso, listar_compromissos, buscar_compromisso, editar_compromisso, excluir_compromisso, marcar_concluido, desmarcar_concluido)
+from models.usuario_model import (criar_tabela_usuarios, cadastrar_usuario, buscar_usuario_por_email)
 
 app = Flask(__name__)
+app.secret_key = "uma_chave_muito_segura"
+criar_tabela_usuarios()  
 
 @app.route('/')
 def index():
@@ -25,6 +25,8 @@ def cadastrar():
 
 @app.route('/listar')
 def listar():
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
     compromissos = listar_compromissos()
     return render_template('listar.html', compromissos=compromissos)
 
@@ -58,6 +60,41 @@ def concluir(id):
 def desfazer(id):
     desmarcar_concluido(id)
     return redirect(url_for('listar'))
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        nome = request.form['nome']
+        email = request.form['email']
+        senha = request.form['senha']
+
+        cadastrar_usuario(nome, email, senha)
+
+        return redirect(url_for('login'))
+
+    return render_template('register_user.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        senha = request.form['senha']
+
+        usuario = buscar_usuario_por_email(email)
+
+        if usuario and usuario[3] == senha:
+            session['usuario_id'] = usuario[0]
+            session['usuario_nome'] = usuario[1]
+            return redirect(url_for('index'))
+
+        return "Usuário ou senha incorretos."
+
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)

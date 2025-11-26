@@ -9,8 +9,18 @@
 <body>
     <nav>
         <a href="{{ url_for('index') }}">Início</a>
-        <a href="{{ url_for('cadastrar') }}">Cadastrar</a>
-        <a href="{{ url_for('listar') }}">Listar</a>
+
+        {% if session.get('usuario_id') %}
+            <!-- Usuário logado -->
+            <a href="{{ url_for('cadastrar') }}">Cadastrar Compromisso</a>
+            <a href="{{ url_for('listar') }}">Listar</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+            
+        {% else %}
+            <!-- Usuário NÃO logado -->
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Criar conta</a>
+        {% endif %}
     </nav>
 
     <div class="container">
