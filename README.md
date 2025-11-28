@@ -22,6 +22,7 @@ Qualquer pessoa que precise de uma ferramenta simples para organizar sua rotina 
 
 ## Funcionalidades
 
+- Fazer o cadastro/login
 - Criar compromissos
 - Listar compromissos
 - Editar compromissos
@@ -90,7 +91,6 @@ Mas a versão web é mais acessível e multiplataforma.
 
 - Os dados ficam apenas na memória.
 - Usuários sem acesso constante à internet podem ter dificuldade.
-- Não possui autenticação, então não há separação por usuário.
 - Acessibilidade visual ainda é limitada.
 
 4. Aprendizados
