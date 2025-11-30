@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from models.compromisso_model import ( adicionar_compromisso, listar_compromissos, buscar_compromisso, editar_compromisso, excluir_compromisso, marcar_concluido, desmarcar_concluido)
+from models.compromisso_model import ( adicionar_compromisso, listar_compromissos, buscar_compromisso, editar_compromisso, excluir_compromisso, marcar_concluido, desmarcar_concluido, criar_tabela_compromissos)
 from models.usuario_model import (criar_tabela_usuarios, cadastrar_usuario, buscar_usuario_por_email)
 
 app = Flask(__name__)
 app.secret_key = "uma_chave_muito_segura"
-criar_tabela_usuarios()  
+criar_tabela_usuarios()
+criar_tabela_compromissos()  
 
 @app.route('/')
 def index():

@@ -2,6 +2,15 @@ import sqlite3
 
 DB_NAME = "agenda.db"
 
+class Compromisso:
+    def __init__(self, id, titulo, data, hora, descricao, concluido=0):
+        self.id = id
+        self.titulo = titulo
+        self.data = data
+        self.hora = hora
+        self.descricao = descricao
+        self.concluido = concluido
+
 def criar_tabela_compromissos():
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -36,18 +45,20 @@ def listar_compromissos():
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM compromissos")
-    compromissos = cursor.fetchall()
+    rows = cursor.fetchall()
     conn.close()
-    return compromissos
+    return [Compromisso(row[0], row[1], row[2], row[3], row[4], row[5]) for row in rows]
 
 
 def buscar_compromisso(id):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM compromissos WHERE id = ?", (id,))
-    compromisso = cursor.fetchone()
+    row = cursor.fetchone()
     conn.close()
-    return compromisso
+    if row:
+        return Compromisso(row[0], row[1], row[2], row[3], row[4], row[5])
+    return None
 
 
 def editar_compromisso(id, titulo, data, hora, descricao):
