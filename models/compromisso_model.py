@@ -20,8 +20,6 @@ class Compromisso(Base):
 
 Base.metadata.create_all(engine)
 
-# -------- CRUD --------
-
 def adicionar_compromisso(titulo, data, hora, descricao):
     novo = Compromisso(
         titulo=titulo,
