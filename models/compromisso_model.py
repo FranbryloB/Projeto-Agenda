@@ -27,12 +27,7 @@ def criar_tabela_compromissos():
     conn.commit()
     conn.close()
 
-
-<<<<<<< HEAD
-Base.metadata.create_all(engine)
-=======
 criar_tabela_compromissos()
->>>>>>> 6369eb98921337d1f2b65495f288b6c9120a9fcc
 
 def adicionar_compromisso(titulo, data, hora, descricao):
     conn = sqlite3.connect(DB_NAME)
