@@ -24,13 +24,13 @@
 
             <div class="botoes">
                 {% if not c.concluido %}
-                    <a class="btn" href="{{ url_for('concluir', id=c.id) }}">Marcar concluído</a>
+                    <a class="btn" href="{{ url_for('compromisso.concluir', id=c.id) }}">Marcar concluído</a>
                 {% else %}
-                    <a class="btn" href="{{ url_for('desfazer', id=c.id) }}">Desfazer</a>
+                    <a class="btn" href="{{ url_for('compromisso.desfazer', id=c.id) }}">Desfazer</a>
                 {% endif %}
 
-                <a class="btn" href="{{ url_for('editar', id=c.id) }}">Editar</a>
-                <a class="btn btn-danger" href="{{ url_for('excluir', id=c.id) }}" onclick="return confirm('Excluir este compromisso?')">Excluir</a>
+                <a class="btn" href="{{ url_for('compromisso.editar', id=c.id) }}">Editar</a>
+                <a class="btn btn-danger" href="{{ url_for('compromisso.excluir', id=c.id) }}" onclick="return confirm('Excluir este compromisso?')">Excluir</a>
             </div>
 
         </div>

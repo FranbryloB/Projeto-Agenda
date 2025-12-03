@@ -1,115 +1,22 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from models.compromisso_model import (
-    adicionar_compromisso, listar_compromissos, buscar_compromisso,
-    editar_compromisso, excluir_compromisso, marcar_concluido, desmarcar_concluido
-)
-from models.usuario_model import cadastrar_usuario, buscar_usuario_por_email
+from flask import Flask, render_template
+from database.db import Base, engine
+import models  # garante que os modelos sejam registrados no metadata
+
+from controllers.usuario_controller import usuario_bp
+from controllers.compromisso_controller import compromisso_bp
 
 app = Flask(__name__)
 app.secret_key = "uma_chave_muito_segura"
 
+app.register_blueprint(usuario_bp)
+app.register_blueprint(compromisso_bp)
 
-@app.route('/')
+Base.metadata.create_all(bind=engine)
+
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
 
-@app.route('/cadastrar', methods=['GET', 'POST'])
-def cadastrar():
-    if request.method == 'POST':
-        adicionar_compromisso(
-            request.form['titulo'],
-            request.form['data'],
-            request.form['hora'],
-            request.form['descricao'],
-            session['usuario_id']
-        )
-        return redirect(url_for('listar'))
-
-    return render_template('cadastro.html')
-
-
-@app.route('/listar')
-def listar():
-    if 'usuario_id' not in session:
-        return redirect(url_for('login'))
-
-    compromissos = listar_compromissos(session['usuario_id'])
-    return render_template('listar.html', compromissos=compromissos)
-
-
-@app.route('/editar/<int:id>', methods=['GET', 'POST'])
-def editar(id):
-    compromisso = buscar_compromisso(id, session['usuario_id'])
-
-    if not compromisso:
-        return "Não permitido."
-
-    if request.method == 'POST':
-        editar_compromisso(
-            id,
-            request.form['titulo'],
-            request.form['data'],
-            request.form['hora'],
-            request.form['descricao'],
-            session['usuario_id']
-        )
-        return redirect(url_for('listar'))
-
-    return render_template('editar.html', compromisso=compromisso)
-
-
-@app.route('/excluir/<int:id>')
-def excluir(id):
-    excluir_compromisso(id, session['usuario_id'])
-    return redirect(url_for('listar'))
-
-
-@app.route('/concluir/<int:id>')
-def concluir(id):
-    marcar_concluido(id, session['usuario_id'])
-    return redirect(url_for('listar'))
-
-
-@app.route('/desfazer/<int:id>')
-def desfazer(id):
-    desmarcar_concluido(id, session['usuario_id'])
-    return redirect(url_for('listar'))
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        cadastrar_usuario(
-            request.form['nome'],
-            request.form['email'],
-            request.form['senha']
-        )
-        return redirect(url_for('login'))
-
-    return render_template('register_user.html')
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        usuario = buscar_usuario_por_email(request.form['email'])
-
-        if usuario and usuario.senha == request.form['senha']:
-            session['usuario_id'] = usuario.id
-            session['usuario_nome'] = usuario.nome
-            return redirect(url_for('index'))
-
-        return "Usuário ou senha incorretos."
-
-    return render_template('login.html')
-
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
