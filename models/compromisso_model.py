@@ -1,95 +1,87 @@
-import sqlite3
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
+from database import Base, engine, SessionLocal
+from models.usuario_model import Usuario
 
-DB_NAME = "agenda.db"
+class Compromisso(Base):
+    __tablename__ = "compromissos"
 
-class Compromisso:
-    def __init__(self, id, titulo, data, hora, descricao, concluido=0):
-        self.id = id
-        self.titulo = titulo
-        self.data = data
-        self.hora = hora
-        self.descricao = descricao
-        self.concluido = concluido
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    titulo = Column(String, nullable=False)
+    data = Column(String, nullable=False)
+    hora = Column(String, nullable=False)
+    descricao = Column(String)
+    concluido = Column(Boolean, default=False)
 
-def criar_tabela_compromissos():
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS compromissos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            titulo TEXT NOT NULL,
-            data TEXT NOT NULL,
-            hora TEXT NOT NULL,
-            descricao TEXT,
-            concluido BOOLEAN DEFAULT 0
-        )
-    """)
-    conn.commit()
-    conn.close()
+    usuario_id = Column(Integer, ForeignKey("usuarios.id"))
+    usuario = relationship("Usuario")
 
-criar_tabela_compromissos()
 
-def adicionar_compromisso(titulo, data, hora, descricao):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO compromissos (titulo, data, hora, descricao, concluido) VALUES (?, ?, ?, ?, 0)",
-        (titulo, data, hora, descricao)
+def adicionar_compromisso(titulo, data, hora, descricao, usuario_id):
+    session = SessionLocal()
+    novo = Compromisso(
+        titulo=titulo,
+        data=data,
+        hora=hora,
+        descricao=descricao,
+        usuario_id=usuario_id
     )
-    conn.commit()
-    conn.close()
+    session.add(novo)
+    session.commit()
+    session.close()
 
 
-def listar_compromissos():
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM compromissos")
-    rows = cursor.fetchall()
-    conn.close()
-    return [Compromisso(row[0], row[1], row[2], row[3], row[4], row[5]) for row in rows]
+def listar_compromissos(usuario_id):
+    session = SessionLocal()
+    compromissos = session.query(Compromisso).filter_by(usuario_id=usuario_id).all()
+    session.close()
+    return compromissos
 
 
-def buscar_compromisso(id):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM compromissos WHERE id = ?", (id,))
-    row = cursor.fetchone()
-    conn.close()
-    if row:
-        return Compromisso(row[0], row[1], row[2], row[3], row[4], row[5])
-    return None
+def buscar_compromisso(id, usuario_id):
+    session = SessionLocal()
+    compromisso = session.query(Compromisso).filter_by(id=id, usuario_id=usuario_id).first()
+    session.close()
+    return compromisso
 
 
-def editar_compromisso(id, titulo, data, hora, descricao):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute(
-        "UPDATE compromissos SET titulo = ?, data = ?, hora = ?, descricao = ? WHERE id = ?",
-        (titulo, data, hora, descricao, id)
-    )
-    conn.commit()
-    conn.close()
+def editar_compromisso(id, titulo, data, hora, descricao, usuario_id):
+    session = SessionLocal()
+    compromisso = session.query(Compromisso).filter_by(id=id, usuario_id=usuario_id).first()
+    if compromisso:
+        compromisso.titulo = titulo
+        compromisso.data = data
+        compromisso.hora = hora
+        compromisso.descricao = descricao
+        session.commit()
+    session.close()
 
 
-def excluir_compromisso(id):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM compromissos WHERE id = ?", (id,))
-    conn.commit()
-    conn.close()
+def excluir_compromisso(id, usuario_id):
+    session = SessionLocal()
+    compromisso = session.query(Compromisso).filter_by(id=id, usuario_id=usuario_id).first()
+    if compromisso:
+        session.delete(compromisso)
+        session.commit()
+    session.close()
 
 
-def marcar_concluido(id):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute("UPDATE compromissos SET concluido = 1 WHERE id = ?", (id,))
-    conn.commit()
-    conn.close()
+def marcar_concluido(id, usuario_id):
+    session = SessionLocal()
+    compromisso = session.query(Compromisso).filter_by(id=id, usuario_id=usuario_id).first()
+    if compromisso:
+        compromisso.concluido = True
+        session.commit()
+    session.close()
 
 
-def desmarcar_concluido(id):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute("UPDATE compromissos SET concluido = 0 WHERE id = ?", (id,))
-    conn.commit()
-    conn.close()
+def desmarcar_concluido(id, usuario_id):
+    session = SessionLocal()
+    compromisso = session.query(Compromisso).filter_by(id=id, usuario_id=usuario_id).first()
+    if compromisso:
+        compromisso.concluido = False
+        session.commit()
+    session.close()
+
+
+Base.metadata.create_all(bind=engine)

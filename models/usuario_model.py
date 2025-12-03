@@ -1,35 +1,29 @@
-import sqlite3
+from sqlalchemy import Column, Integer, String
+from database import Base, engine, SessionLocal
 
-DB_NAME = "agenda.db"
+class Usuario(Base):
+    __tablename__ = "usuarios"
 
-def criar_tabela_usuarios():
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS usuarios (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            senha TEXT NOT NULL
-        )
-    """)
-    conn.commit()
-    conn.close()
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nome = Column(String, nullable=False)
+    email = Column(String, nullable=False, unique=True)
+    senha = Column(String, nullable=False)
 
 
 def cadastrar_usuario(nome, email, senha):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)",
-                   (nome, email, senha))
-    conn.commit()
-    conn.close()
+    session = SessionLocal()
+    usuario = Usuario(nome=nome, email=email, senha=senha)
+    session.add(usuario)
+    session.commit()
+    session.close()
 
 
 def buscar_usuario_por_email(email):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM usuarios WHERE email = ?", (email,))
-    user = cursor.fetchone()
-    conn.close()
-    return user
+    session = SessionLocal()
+    usuario = session.query(Usuario).filter_by(email=email).first()
+    session.close()
+    return usuario
+
+
+# Cria tabela se não existir
+Base.metadata.create_all(bind=engine)
