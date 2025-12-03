@@ -7,7 +7,7 @@ class Compromisso(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     titulo = Column(String, nullable=False)
-    data = Column(String, nullable=False)   # mantive string para compatibilidade com seus templates
+    data = Column(String, nullable=False)  
     hora = Column(String, nullable=False)
     descricao = Column(String)
     concluido = Column(Boolean, default=False)

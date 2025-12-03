@@ -38,6 +38,14 @@ Qualquer pessoa que precise de uma ferramenta simples para organizar sua rotina 
 - HTML + CSS
 - Estrutura MVC
 
+## Arquitetura MVC
+
+O projeto segue o padrão Model–View–Controller:
+
+- **Model:** Camada responsável pelo acesso ao banco de dados (tabelas Usuário e Compromisso).
+- **View:** Templates HTML localizados em 'templates/', renderizados com Jinja2.
+- **Controller:** Arquivos em 'controllers/' responsáveis pelas rotas e regras de negócio.
+
 ## Instalação
 
 1. Clonar o repositório (ou abrir a pasta do projeto):
@@ -89,9 +97,10 @@ Mas a versão web é mais acessível e multiplataforma.
 
 3. Limites da solução
 
-- Os dados ficam apenas na memória.
+- Os dados ficam armazenados em banco local (SQLite), sem sincronização online.
+- Isso pode representar riscos se o computador for compartilhado, pois informações pessoais ficam disponíveis localmente.
 - Usuários sem acesso constante à internet podem ter dificuldade.
-- Acessibilidade visual ainda é limitada.
+- O sistema ainda não possui recursos de acessibilidade como alto contraste ou suporte a leitores de tela.
 
 4. Aprendizados
 
