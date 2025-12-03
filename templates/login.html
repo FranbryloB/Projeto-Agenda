@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2>Login</h2>
-
+<div class="card-form">
 <form method="POST">
     <label>Email:</label>
     <input type="email" name="email" required>
@@ -13,5 +13,5 @@
     <button type="submit">Entrar</button>
 </form>
 
-<p>Não tem conta? <a href="{{ url_for('register') }}">Cadastre-se</a></p>
+<p>Não tem conta? <a href="{{ url_for('register') }}" class="link-form">Cadastre-se</a></p></div>
 {% endblock %}

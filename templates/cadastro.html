@@ -1,21 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Cadastrar Compromisso</h2>
 
-<form method="POST" action="{{ url_for('cadastrar') }}">
-    <label>Título:</label>
-    <input type="text" name="titulo" required>
+<div class="card-form">
+    <h2>Cadastrar Compromisso</h2>
 
-    <label>Data:</label>
-    <input type="date" name="data" required>
+    <form method="POST" action="{{ url_for('cadastrar') }}">
 
-    <label>Hora:</label>
-    <input type="time" name="hora" required>
+        <label>Título:</label>
+        <input type="text" name="titulo" required>
 
-    <label>Descrição:</label>
-    <textarea name="descricao"></textarea>
+        <label>Data:</label>
+        <input type="date" name="data" required>
 
-    <button type="submit">Cadastrar</button>
-</form>
+        <label>Hora:</label>
+        <input type="time" name="hora" required>
+
+        <label>Descrição:</label>
+        <textarea name="descricao"></textarea>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+</div>
+
 {% endblock %}

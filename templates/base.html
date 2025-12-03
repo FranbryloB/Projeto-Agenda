@@ -8,6 +8,9 @@
 
 <body>
     <nav>
+        <a href="{{ url_for('index') }}" class="logo-link">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Agenda" class="logo-nav">
+        </a>
         <a href="{{ url_for('index') }}">Início</a>
 
         {% if session.get('usuario_id') %}
@@ -26,5 +29,8 @@
     <div class="container">
         {% block content %}{% endblock %}
     </div>
+    <footer>
+    Organize melhor o seu dia a dia!
+</footer>
 </body>
 </html>

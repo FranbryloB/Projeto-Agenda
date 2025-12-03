@@ -1,36 +1,46 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Lista de Compromissos</h2>
 
 {% if compromissos %}
-    <ul>
+<div class="card-form">
+    <h2>Lista de Compromissos</h2>
+
+    <div class="lista-compromissos">
+
         {% for c in compromissos %}
-            <li class="{% if c.concluido %}concluido{% endif %}">
-                
+        <div class="compromisso-item {% if c.concluido %}comp-concluido{% endif %}">
+            
+            <p class="titulo">
                 {% if c.concluido %}
-                    <p>{{ c.titulo }} (Concluído)</p>
+                    {{ c.titulo }} <span class="done">(Concluído)</span>
                 {% else %}
-                    <strong>{{ c.titulo }}</strong>
+                    {{ c.titulo }}
                 {% endif %}
+            </p>
 
-                {{ c.data }} às {{ c.hora }} <br>
-                {{ c.descricao }} <br><br>
+            <p class="info">{{ c.data }} às {{ c.hora }}</p>
+            <p class="desc">{{ c.descricao }}</p>
 
+            <div class="botoes">
                 {% if not c.concluido %}
-                    <a href="{{ url_for('concluir', id=c.id) }}">Marcar concluído</a> 
+                    <a class="btn" href="{{ url_for('concluir', id=c.id) }}">Marcar concluído</a>
                 {% else %}
-                    <a href="{{ url_for('desfazer', id=c.id) }}">Desfazer</a> 
+                    <a class="btn" href="{{ url_for('desfazer', id=c.id) }}">Desfazer</a>
                 {% endif %}
 
-                <a href="{{ url_for('editar', id=c.id) }}">Editar</a> 
-                <a href="{{ url_for('excluir', id=c.id) }}" onclick="return confirm('Excluir este compromisso?')">Excluir</a>
+                <a class="btn" href="{{ url_for('editar', id=c.id) }}">Editar</a>
+                <a class="btn btn-danger" href="{{ url_for('excluir', id=c.id) }}" onclick="return confirm('Excluir este compromisso?')">Excluir</a>
+            </div>
 
-            </li>
-            <hr>
+        </div>
         {% endfor %}
-    </ul>
+
+    </div>
+
+</div>
 {% else %}
     <p>Nenhum compromisso cadastrado.</p>
 {% endif %}
+
 {% endblock %}
