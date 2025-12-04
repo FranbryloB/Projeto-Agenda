@@ -13,3 +13,6 @@ __pycache__/
 
 # Configurações do vscode
 .vscode/*
+
+# Banco de dados SQLite
+*.db

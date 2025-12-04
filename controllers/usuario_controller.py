@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 from database.db import SessionLocal
 from models.usuario_model import Usuario
 
@@ -17,7 +18,7 @@ def register():
             db.close()
             flash("Email já cadastrado.", "error")
             return render_template("register_user.html")
-        novo = Usuario(nome=nome, email=email, senha=senha)
+        novo = Usuario(nome=nome, email=email, senha=generate_password_hash(senha))
         db.add(novo)
         db.commit()
         db.close()
@@ -35,7 +36,7 @@ def login():
         senha = request.form.get("senha")
 
         db = SessionLocal()
-        usuario = db.query(Usuario).filter_by(email=email, senha=senha).first()
+        usuario = db.query(Usuario).filter_by(email=email).first()
         db.close()
 
         if usuario:
@@ -43,6 +44,10 @@ def login():
             session["usuario_nome"] = usuario.nome
             return redirect(url_for("index"))
 
+        if not check_password_hash(usuario.senha, senha):
+            flash("Senha incorreta.", "error")
+            return render_template("login.html")
+            
         flash("Usuário ou senha incorretos.", "error")
         return render_template("login.html")
 
